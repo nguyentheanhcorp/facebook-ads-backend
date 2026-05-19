@@ -41,6 +41,7 @@ const handler = async (req, res) => {
     return res.status(500).json({
       error: 'API Error',
       message: error.message,
+          facebookError: error.facebookError || null,
       troubleshooting: 'Check access token and business account ID permissions'
     });
   }
@@ -64,8 +65,9 @@ const getAdAccounts = async (accessToken, businessAccountId) => {
             console.error('URL:', url);
             console.error('Full Error Response:', JSON.stringify(errorData));
       console.error(`Facebook API Error: ${response.status}`, errorData);
-      throw new Error(`Facebook API Error: ${response.status} - ${errorData.error?.message || response.statusText}`);
-    }
+const error = new Error(`Facebook API Error: ${response.status} - ${errorData.error?.message || response.statusText}`);
+            error.facebookError = errorData;
+            throw error;}
 
     const data = await response.json();
 
