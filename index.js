@@ -61,6 +61,8 @@ const getAdAccounts = async (accessToken, businessAccountId) => {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+            console.error('URL:', url);
+            console.error('Full Error Response:', JSON.stringify(errorData));
       console.error(`Facebook API Error: ${response.status}`, errorData);
       throw new Error(`Facebook API Error: ${response.status} - ${errorData.error?.message || response.statusText}`);
     }
